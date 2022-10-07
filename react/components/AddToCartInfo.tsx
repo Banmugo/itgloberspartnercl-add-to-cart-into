@@ -7,9 +7,14 @@ import ButtonGroup from "./ButtonGroup";
 import { generateBlockClass } from "@vtex/css-handles";
 import styles from './styles.css'
 
-const AddToCartInfo = ({blockCLass}: { blockCLass: string }) => {
-  const container = generateBlockClass(styles.container, blockCLass)
-  const container__item = generateBlockClass(styles.container__item, blockCLass)
+const AddToCartInfo = ({ blockCLass }: { blockCLass: string }) => {
+  const container = generateBlockClass(styles.container, blockCLass),
+    container__item = generateBlockClass(styles.container__item, blockCLass),
+    container__detail = generateBlockClass(styles.container__detail, blockCLass),
+    container__detailone = generateBlockClass(styles.container__detailone, blockCLass),
+    total__price = generateBlockClass(styles.total__price, blockCLass)
+
+
   const productInfo = useProduct()
   const { orderForm: {
     items,
@@ -25,24 +30,38 @@ const AddToCartInfo = ({blockCLass}: { blockCLass: string }) => {
           console.log(item);
           return (
             <div key={index} className={container__item}>
+
+              <div className={container__detail}>
+                <div >
+                  <img src={item.imageUrls.at1x} alt="img item" />
+                </div>
+                <div className={container__detailone}>
+                  <p>{item.name}</p>
+                  <p>Ref:{item.id}</p>
+                  <p>Cant:{item.quantity}</p>
+                </div>
+              </div>
               <div>
-                <img src={item.imageUrls.at1x} alt="img item" />
-                <p>{item.name}</p>
-                <p>{item.id}</p>
-                <p>${item.price / 100}</p>
-                <p>Cant:{item.quantity}</p>
+                <p >${item.price / 100}</p>
               </div>
             </div>
+
           )
         }
         )
       }
       {/* <Totalizers totalizers={totalizers}/> */}
       <div>
-        <p>Tenemos {items.length} items en tu compra</p>
-        <p>Total: ${totalizers?.value / 100}</p>
+        <p>Total items en tu compra: {items.length} </p>
+        {
+          totalizers.length <= 0
+            ?
+            <p className={total__price}>Total: calculando...</p>
+            :
+            <p className={total__price}>Total: ${totalizers?.value / 100}</p>
+        }
       </div>
-      <ButtonGroup />
+      <ButtonGroup blockCLass={blockCLass} />
     </div>
   )
 }
